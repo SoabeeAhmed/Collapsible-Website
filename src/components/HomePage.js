@@ -8,7 +8,7 @@ const HomePage = () => {
   const componentConfigs = [
     { 
       id: 1, 
-      title: 'Component 1', 
+      title: 'Data Measure', 
       subcategories: [
         { title: 'DQ Check', jsonFile: 'c1' },
         { title: 'DQ Metric', jsonFile: 'c2' }
@@ -16,7 +16,7 @@ const HomePage = () => {
     },
     { 
       id: 2, 
-      title: 'Component 2', 
+      title: 'Data Quality', 
       subcategories: [
         { title: 'Data Integrity', jsonFile: 'c3' },
         { title: 'Data Accuracy', jsonFile: 'c4' }
@@ -24,7 +24,7 @@ const HomePage = () => {
     },
     { 
       id: 3, 
-      title: 'Component 3', 
+      title: 'Data Hierarchy', 
       subcategories: [
         { title: 'Data Classification', jsonFile: 'c5' },
         { title: 'Data Structure', jsonFile: 'c6' }
@@ -51,6 +51,7 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
+      <h1 className='data-header'>Data Quality Index</h1>
       {componentConfigs.map(config => (
         <div 
           key={config.id} 

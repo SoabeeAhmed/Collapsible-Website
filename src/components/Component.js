@@ -53,16 +53,6 @@ const Component = ({ componentId, jsonFile }) => {
 
   return (
     <div className="component-questions">
-      <h3>{subheading}</h3>
-      <input 
-        type="text" 
-        placeholder="Enter 5-character Employee ID" 
-        maxLength="5"
-        className="emp-id-input"
-        value={empId}
-        onChange={(e) => setEmpId(e.target.value)}
-      />
-
       {questions.length > 0 ? (
         questions.map((question, index) => (
           <SubComponent 
@@ -74,13 +64,21 @@ const Component = ({ componentId, jsonFile }) => {
       ) : (
         <p>Loading questions...</p>
       )}
-
+      <input 
+        type="text" 
+        placeholder="Enter 5-character Employee ID" 
+        maxLength="5"
+        className="emp-id-input"
+        value={empId}
+        onChange={(e) => setEmpId(e.target.value)}
+      />
       <button 
         className="submit-button"
         onClick={handleSubmit}
       >
         Submit
       </button>
+      
     </div>
   );
 };

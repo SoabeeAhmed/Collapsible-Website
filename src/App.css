@@ -4,10 +4,15 @@
   padding: 20px;
 }
 
+.data-header{
+  color: red;
+  
+}
+
 .component {
   border: 1px solid #ddd;
   margin-bottom: 10px;
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .component-header, .subcategory-header {
@@ -17,20 +22,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 16px;
+}
+
+.component-header:focus, .subcategory-header:focus{
+  border-radius: 16px 16px 0 0;
 }
 
 .component-header:hover, .subcategory-header:hover {
-  background-color: #e4e4e4;
+  background-color: #1c448e;
+  color:white
 }
 
 .component-subcategories {
   padding: 10px;
+  border-radius: 16px;
 }
 
 .subcategory {
   border: 1px solid #e0e0e0;
   margin-bottom: 10px;
-  border-radius: 4px;
+  border-radius: 16px;
 }
 
 .subcategory-content {
@@ -38,7 +50,7 @@
 }
 
 .emp-id-input {
-  width: 100%;
+  width: 97.3%;
   padding: 8px;
   margin-bottom: 10px;
 }
@@ -46,15 +58,11 @@
 .submit-button {
   width: 100%;
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #1877f2;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.submit-button:hover {
-  background-color: #45a049;
 }
 
 .component-questions h3 {

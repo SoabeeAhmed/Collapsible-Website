@@ -13,7 +13,7 @@ const SubComponent = ({ question, onAnswerChange }) => {
           <label key={option}>
             <input
               type="radio"
-              name={`question-${question.id}`}
+              name={`question-${question.subheading}-${question.id}`} 
               value={option}
               onChange={handleRadioChange}
             />
