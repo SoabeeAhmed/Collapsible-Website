@@ -18,6 +18,7 @@ const SubComponent = ({ question, onAnswerChange }) => {
               onChange={handleRadioChange}
             />
             {option}
+            
           </label>
         ))}
       </div>
