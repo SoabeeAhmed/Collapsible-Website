@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Component from './Component';
+import { FaDatabase } from "react-icons/fa";
+import { TbRulerMeasure2 } from "react-icons/tb";
+
 
 const HomePage = () => {
   const [openComponent, setOpenComponent] = useState(null);
@@ -12,6 +15,7 @@ const HomePage = () => {
     { 
       id: 1, 
       title: 'Data Measure', 
+      icon:<TbRulerMeasure2 />,
       subcategories: [
         { title: 'DQ Check', jsonFile: 'c1' },
         { title: 'DQ Metric', jsonFile: 'c2' }
@@ -19,7 +23,7 @@ const HomePage = () => {
     },
     { 
       id: 2, 
-      title: 'Data Quality', 
+      title: 'Data Quality',
       subcategories: [
         { title: 'Data Integrity', jsonFile: 'c3' },
         { title: 'Data Accuracy', jsonFile: 'c4' }
@@ -66,13 +70,19 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
-      <h1 className='data-header'>Data Quality Index</h1>
+      <div>
+        <div className='container-header'>
+          <FaDatabase className='header-icon'/>
+          <h1 className='data-header'>Data Quality Index</h1>
+        </div>
+      <p className='data-subheader'>Comprehensive Assessment of Data Quality for Improved Decision-Making</p>
+      </div>
       {componentConfigs.map(config => (
         <div key={config.id} className="component">
           <div className="component-header" onClick={() => handleComponentClick(config.id)}>
+            {config.icon}
             {config.title} <span>{openComponent === config.id ? '▼' : '▶'}</span>
           </div>
-          
           {openComponent === config.id && (
             <div className="component-subcategories">
               {config.subcategories.map(subcategory => (

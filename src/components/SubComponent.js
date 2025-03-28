@@ -1,15 +1,15 @@
 import React from 'react';
-
+ 
 const SubComponent = ({ question, questionId, onAnswerChange, selectedAnswer }) => {
   return (
     <div className="subcomponent">
-      <p>{question.question}</p>
+      <p className="subcomponent-question">{question.question}</p>
       <div className='radio-group'>
       {question.options.map((option, index) => (
         <label key={index}>
           <input
             type="radio"
-            name={`question_${questionId}`} 
+            name={`question-${question.subheading}-${question.id}`}
             value={option}
             checked={selectedAnswer === option}
             onChange={() => onAnswerChange(questionId, option)}
@@ -21,5 +21,5 @@ const SubComponent = ({ question, questionId, onAnswerChange, selectedAnswer }) 
     </div>
   );
 };
-
+ 
 export default SubComponent;
