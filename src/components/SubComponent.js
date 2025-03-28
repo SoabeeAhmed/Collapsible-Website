@@ -15,6 +15,7 @@ const SubComponent = ({ question, onAnswerChange }) => {
               type="radio"
               name={`question-${question.subheading}-${question.id}`} 
               value={option}
+              
               onChange={handleRadioChange}
             />
             {option}
