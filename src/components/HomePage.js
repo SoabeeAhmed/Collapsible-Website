@@ -8,11 +8,7 @@ const HomePage = () => {
   const componentConfigs = [
     { 
       id: 1, 
-<<<<<<< HEAD
-      title: 'Component 1', 
-=======
       title: 'Data Measure', 
->>>>>>> 38959636534f1865927ac1ac1190e4b06881ec9f
       subcategories: [
         { title: 'DQ Check', jsonFile: 'c1' },
         { title: 'DQ Metric', jsonFile: 'c2' }
@@ -20,11 +16,7 @@ const HomePage = () => {
     },
     { 
       id: 2, 
-<<<<<<< HEAD
-      title: 'Component 2', 
-=======
       title: 'Data Quality', 
->>>>>>> 38959636534f1865927ac1ac1190e4b06881ec9f
       subcategories: [
         { title: 'Data Integrity', jsonFile: 'c3' },
         { title: 'Data Accuracy', jsonFile: 'c4' }
@@ -32,11 +24,7 @@ const HomePage = () => {
     },
     { 
       id: 3, 
-<<<<<<< HEAD
-      title: 'Component 3', 
-=======
       title: 'Data Hierarchy', 
->>>>>>> 38959636534f1865927ac1ac1190e4b06881ec9f
       subcategories: [
         { title: 'Data Classification', jsonFile: 'c5' },
         { title: 'Data Structure', jsonFile: 'c6' }
@@ -63,10 +51,7 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
-<<<<<<< HEAD
-=======
       <h1 className='data-header'>Data Quality Index</h1>
->>>>>>> 38959636534f1865927ac1ac1190e4b06881ec9f
       {componentConfigs.map(config => (
         <div 
           key={config.id} 
