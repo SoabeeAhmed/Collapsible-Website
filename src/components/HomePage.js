@@ -4,6 +4,9 @@ import Component from './Component';
 const HomePage = () => {
   const [openComponent, setOpenComponent] = useState(null);
   const [openSubcategory, setOpenSubcategory] = useState({});
+  const [empId, setEmpId] = useState('');
+  const [answers, setAnswers] = useState({});
+  const [subheading, setSubheading] = useState('');
 
   const componentConfigs = [
     { 
@@ -33,10 +36,7 @@ const HomePage = () => {
   ];
 
   const handleComponentClick = (componentId) => {
-    setOpenComponent(prevOpen => 
-      prevOpen === componentId ? null : componentId
-    );
-    // Reset subcategory when component is closed
+    setOpenComponent(prevOpen => prevOpen === componentId ? null : componentId);
     if (openComponent === componentId) {
       setOpenSubcategory({});
     }
@@ -49,44 +49,48 @@ const HomePage = () => {
     }));
   };
 
+  const handleSubmit = () => {
+    if (empId.length !== 5) {
+      alert('Please enter a 5-character Employee ID');
+      return;
+    }
+
+    const submissionData = {
+      empId,
+      answers
+    };
+
+    console.log('Submission Data:', submissionData);
+    localStorage.setItem('submission_data', JSON.stringify(submissionData));
+  };
+
   return (
     <div className="home-container">
       <h1 className='data-header'>Data Quality Index</h1>
       {componentConfigs.map(config => (
-        <div 
-          key={config.id} 
-          className="component"
-        >
-          <div 
-            className="component-header" 
-            onClick={() => handleComponentClick(config.id)}
-          >
-            {config.title}
-            <span>{openComponent === config.id ? '▼' : '▶'}</span>
+        <div key={config.id} className="component">
+          <div className="component-header" onClick={() => handleComponentClick(config.id)}>
+            {config.title} <span>{openComponent === config.id ? '▼' : '▶'}</span>
           </div>
           
           {openComponent === config.id && (
             <div className="component-subcategories">
               {config.subcategories.map(subcategory => (
-                <div 
-                  key={subcategory.title}
-                  className="subcategory"
-                >
-                  <div 
-                    className="subcategory-header"
-                    onClick={() => handleSubcategoryClick(config.id, subcategory.title)}
-                  >
+                <div key={subcategory.title} className="subcategory">
+                  <div className="subcategory-header" onClick={() => handleSubcategoryClick(config.id, subcategory.title)}>
                     {subcategory.title}
-                    <span>
-                      {openSubcategory[config.id] === subcategory.title ? '▼' : '▶'}
-                    </span>
+                    <span>{openSubcategory[config.id] === subcategory.title ? '▼' : '▶'}</span>
                   </div>
                   
                   {openSubcategory[config.id] === subcategory.title && (
                     <div className="subcategory-content">
                       <Component 
                         componentId={config.id} 
-                        jsonFile={subcategory.jsonFile} 
+                        jsonFile={subcategory.jsonFile}
+                        answers={answers} 
+                        setAnswers={setAnswers}
+                        subheading={subheading} 
+                        setSubheading={setSubheading} 
                       />
                     </div>
                   )}
@@ -96,6 +100,19 @@ const HomePage = () => {
           )}
         </div>
       ))}
+      
+      {/* Single Employee ID Input and Submit Button */}
+      <input 
+        type="text" 
+        placeholder="Enter 5-character Employee ID" 
+        maxLength="5"
+        className="emp-id-input"
+        value={empId}
+        onChange={(e) => setEmpId(e.target.value)}
+      />
+      <button className="submit-button" onClick={handleSubmit}>
+        Submit
+      </button>
     </div>
   );
 };
