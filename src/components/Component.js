@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SubComponent from './SubComponent';
 
-const Component = ({ componentId, jsonFile, answers, setAnswers, subheading, setSubheading }) => {
+const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, setSubheading }) => {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Component = ({ componentId, jsonFile, answers, setAnswers, subheading, set
   const handleAnswerChange = (questionId, answer) => {
     setAnswers(prev => ({
       ...prev,
-      [`${componentId}_${jsonFile}_${questionId}`]: answer
+      [`${componentTitle}_${subheading}_${questionId}`]: answer
     }));
   };
 
@@ -40,7 +40,7 @@ const Component = ({ componentId, jsonFile, answers, setAnswers, subheading, set
             question={question}
             questionId={index}
             onAnswerChange={handleAnswerChange}
-            selectedAnswer={answers[`${componentId}_${jsonFile}_${index}`] || ""}
+            selectedAnswer={answers[`${componentTitle}_${subheading}_${index}`] || ""}
           />
         ))
       ) : (
