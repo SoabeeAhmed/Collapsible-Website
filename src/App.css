@@ -84,6 +84,10 @@ body{
   color: white;
 }
 
+.component-header:hover{
+  transform: scale(1.03);
+}
+
 .component-subcategories {
   padding: 10px;
   border-radius: 17px;
