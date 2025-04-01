@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Component from './Component';
 import { FaDatabase } from "react-icons/fa";
 import { TbRulerMeasure2 } from "react-icons/tb";
-
+import { TbDatabaseStar } from "react-icons/tb";
+import { TbHierarchy3 } from "react-icons/tb";
 
 const HomePage = () => {
   const [openComponent, setOpenComponent] = useState(null);
@@ -24,6 +25,7 @@ const HomePage = () => {
     { 
       id: 2, 
       title: 'Data Quality',
+      icon:<TbDatabaseStar />,
       subcategories: [
         { title: 'Data Integrity', jsonFile: 'c3' },
         { title: 'Data Accuracy', jsonFile: 'c4' }
@@ -32,6 +34,7 @@ const HomePage = () => {
     { 
       id: 3, 
       title: 'Data Hierarchy', 
+      icon:<TbHierarchy3 />,
       subcategories: [
         { title: 'Data Classification', jsonFile: 'c5' },
         { title: 'Data Structure', jsonFile: 'c6' }
