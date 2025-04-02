@@ -241,3 +241,19 @@ body::before {
   color:white;
   border-radius: 4px;
 }
+
+.reset-button{
+  display: block;
+  margin: 0 auto;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color:#95a5a6;
+  border:none;
+  color:white;
+  border-radius: 4px;
+}
+.reset-button:hover{
+  background-color:#636a6a;
+  transition: all 0.2s ease-in-out;
+}
