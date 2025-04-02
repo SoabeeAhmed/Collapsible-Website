@@ -13,8 +13,14 @@ const handleSubmit = () => {
   } else {
     // Check for specific error conditions
     if (empId.length !== 5) {
-      alert('Employee ID must be exactly 5 characters long.');
-    } else if (!empId.startsWith('A')) {
+      if(empId.length === 0){
+        alert('Please enter Employee ID');
+      }
+      else{
+        alert('Employee ID must be exactly 5 characters long.');
+      }
+    } 
+    else if (!empId.startsWith('A')) {
       alert('The first character must be "A".');
     } else if (!/^[0-9]{4}$/.test(empId.slice(1))) {
       alert('The last 4 characters must be digits.');
