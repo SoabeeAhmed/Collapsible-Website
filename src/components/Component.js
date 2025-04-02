@@ -85,7 +85,7 @@ const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, 
     }));
   };
 
-  const handleReset = () => {
+   const handleReset = () => {
     // Clear answers for the current subheading
     setAnswers(prev => {
       const newAnswers = { ...prev };

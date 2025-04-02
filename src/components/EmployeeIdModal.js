@@ -10,6 +10,7 @@ const handleSubmit = () => {
   if (empIdRegex.test(empId)) {
     onSubmit(empId); // Pass the empId to the parent component
     onClose(); // Close the modal
+    setEmpId('');
   } else {
     // Check for specific error conditions
     if (empId.length !== 5) {

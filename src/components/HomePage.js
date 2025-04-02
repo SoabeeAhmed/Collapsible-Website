@@ -38,6 +38,7 @@ const HomePage = () => {
     console.log('Submission Data:', submissionData);
     localStorage.setItem('submission_data', JSON.stringify(submissionData));
     alert('Submission successful!');
+    setAnswers({});
   };
   return (
     <div className="home-container">
@@ -88,7 +89,6 @@ const HomePage = () => {
       isOpen={isModalOpen}
       onClose={()=>setIsModalOpen(false)}
       onSubmit={handleEmployeeIdSubmit}>
-
       </EmployeeIdModal>
     </div>
   );
