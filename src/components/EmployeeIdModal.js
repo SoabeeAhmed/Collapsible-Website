@@ -6,13 +6,12 @@ const EmployeeIdModal = ({ isOpen, onClose, onSubmit }) => {
   const empIdRegex = /^[A][0-9]{4}$/;
 
 const handleSubmit = () => {
-  // Check if Employee ID matches the full regex (starts with 'A' and followed by 4 digits)
   if (empIdRegex.test(empId)) {
-    onSubmit(empId); // Pass the empId to the parent component
-    onClose(); // Close the modal
+    onSubmit(empId);
+    onClose(); 
     setEmpId('');
   } else {
-    // Check for specific error conditions
+    
     if (empId.length !== 5) {
       if(empId.length === 0){
         alert('Please enter Employee ID');
