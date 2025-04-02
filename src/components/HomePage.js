@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Component from './Component';
 import { FaDatabase } from "react-icons/fa";
 import { TbRulerMeasure2, TbDatabaseStar, TbHierarchy3 } from "react-icons/tb";
+import EmployeeIdModal from './EmployeeIdModal';
+
 
 const HomePage = () => {
   const [openComponent, setOpenComponent] = useState(null);
@@ -9,7 +11,7 @@ const HomePage = () => {
   const [empId, setEmpId] = useState('');
   const [answers, setAnswers] = useState({});
   const [subheading, setSubheading] = useState('');
-
+  const [isModalOpen,setIsModalOpen]=useState(false);
   const componentConfigs = [
     { 
       id: 1, 
@@ -56,23 +58,35 @@ const HomePage = () => {
 
   const handleSubmit = () => {
     // Ask for Employee ID using prompt
-    const userEmpId = window.prompt('Please enter your 5-character Employee ID:');
-
-    if (userEmpId && userEmpId.length === 5) {
-      setEmpId(userEmpId); // Update state with the entered ID
-
-      const submissionData = {
-        empId: userEmpId,
-        answers
-      };
-
-      console.log('Submission Data:', submissionData);
-      localStorage.setItem('submission_data', JSON.stringify(submissionData));
-      alert('Submission successful!');
-    } else {
-      alert('Invalid Employee ID. Please enter exactly 5 characters.');
-    }
+    // const userEmpId = window.prompt('Please enter your 5-character Employee ID:');
+    setIsModalOpen(true);
   };
+  const handleEmployeeIdSubmit=(userEmpId)=>{
+    setEmpId(userEmpId);
+    const submissionData = {
+      empId: userEmpId,
+      answers
+    };
+    console.log('Submission Data:', submissionData);
+    localStorage.setItem('submission_data', JSON.stringify(submissionData));
+    alert('Submission successful!');
+  };
+
+  //   if (userEmpId && userEmpId.length === 5) {
+  //     setEmpId(userEmpId); // Update state with the entered ID
+
+  //     const submissionData = {
+  //       empId: userEmpId,
+  //       answers
+  //     };
+
+  //     console.log('Submission Data:', submissionData);
+  //     localStorage.setItem('submission_data', JSON.stringify(submissionData));
+  //     alert('Submission successful!');
+  //   } else {
+  //     alert('Invalid Employee ID. Please enter exactly 5 characters.');
+  //   }
+  // };
 
   return (
     <div className="home-container">
@@ -128,6 +142,12 @@ const HomePage = () => {
       <button className="submit-button" onClick={handleSubmit}>
         Submit
       </button>
+      <EmployeeIdModal
+      isOpen={isModalOpen}
+      onClose={()=>setIsModalOpen(false)}
+      onSubmit={handleEmployeeIdSubmit}>
+
+      </EmployeeIdModal>
     </div>
   );
 };
