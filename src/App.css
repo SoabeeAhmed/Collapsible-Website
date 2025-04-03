@@ -21,7 +21,7 @@ body::before {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Arial', sans-serif; /* Adding a sans-serif font */
+  font-family: 'Arial', sans-serif; 
 }
 
 .container-header{
@@ -33,9 +33,9 @@ body::before {
 }
 .data-header {
   color: rgb(47, 1, 1);
-  text-align: center; /* Centering the main heading */
-  font-size: 56px; /* Adjust font size for the main header */
-  margin-bottom: 5px; /* Adding space below the header */
+  text-align: center; 
+  font-size: 56px;
+  margin-bottom: 5px; 
   font-family: "Bayon", sans-serif
 }
 .header-icon{
@@ -53,15 +53,15 @@ body::before {
   border: 1px solid #ddd;
   margin-bottom: 10px;
   border-radius: 16px;
-  opacity: 0.8; /* Dull non-open components */
-  transition: opacity 0.3s ease; /* Adding transition for opacity change */
+  opacity: 0.8; 
+  transition: opacity 0.3s ease; 
   background-color: white
 }
 
 .component.open {
-  opacity: 1; /* Highlight the open component */
-  background-color: #e3f2fd; /* Light blue background when open */
-  border: 1px solid #1877f2; /* Border color when open */
+  opacity: 1; 
+  background-color: #e3f2fd; 
+  border: 1px solid #1877f2;
 }
 
 .component-header {
@@ -139,7 +139,7 @@ body::before {
 .component-questions h3 {
   margin-bottom: 15px;
   text-align: center;
-  font-size: 28px; /* Adjusting heading size */
+  font-size: 28px;
 }
 
 .subcomponent {
@@ -193,7 +193,7 @@ body::before {
 }
 
 
-/*modal's css*/
+
 .modal-overlay {
   position: fixed;
   top: 0;

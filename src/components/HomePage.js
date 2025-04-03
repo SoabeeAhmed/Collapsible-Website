@@ -54,7 +54,7 @@ const HomePage = () => {
         <div key={config.id} className="component">
           <div className="component-header" onClick={() => handleComponentClick(config.id)}>
             {config.icon}
-            {config.title} <span>{openComponent === config.id ? '▼' : '▶'}</span>
+            {config.title} <span>{openComponent === config.id ? '\u25BC' : '\u25B6'}</span>
           </div>
           {openComponent === config.id && (
             <div className="component-subcategories">
@@ -62,7 +62,7 @@ const HomePage = () => {
                 <div key={subcategory.title} className="subcategory">
                   <div className="subcategory-header" onClick={() => handleSubcategoryClick(config.id, subcategory.title)}>
                     {subcategory.title}
-                    <span>{openSubcategory[config.id] === subcategory.title ? '▼' : '▶'}</span>
+                    <span>{openSubcategory[config.id] === subcategory.title ? '\u25BC' : '\u25B6'}</span>
                   </div>
                   {openSubcategory[config.id] === subcategory.title && (
                     <div className="subcategory-content">
