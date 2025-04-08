@@ -72,6 +72,8 @@ const HomePage = () => {
 
   const handleEmployeeIdSubmit = (userEmpId) => {
     setEmpId(userEmpId);
+  
+    // Immediately use the latest answers state
     const submissionData = {
       empId: userEmpId,
       answers
@@ -81,29 +83,20 @@ const HomePage = () => {
     
     // Update savedAnswers state with the current answers
     setSavedAnswers(answers);
-    
+  
     alert('Submission successful!');
-    
-    let storedAnswers = savedAnswers;
-    let storedEmpId = empId;
-    
-    // If savedAnswers is empty, try to get from localStorage as fallback
-    if (Object.keys(storedAnswers).length === 0) {
-      const savedData = localStorage.getItem('submission_data');
-      if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        storedAnswers = parsedData.answers || {};
-        storedEmpId = parsedData.empId || empId;
-      }
-    }
-    
+  
+    // Directly use answers from state, not savedAnswers
+    let storedAnswers = answers; // Get the answers directly from state
+    let storedEmpId = userEmpId; // Use the userEmpId passed in
+  
     // Log retrieved data for debugging
     console.log("Answers used for export:", storedAnswers);
-    
+  
     const data = [
       ['Employee ID', 'Category', 'Subcategory', 'Question', 'Answer'] // Headers for the Excel file
     ];
-
+  
     const collectAnswers = async () => {
       for (const config of Configs) {
         for (const subcategory of config.subcategories) {
@@ -115,13 +108,13 @@ const HomePage = () => {
             "Data Classification": "c5",
             "Data Structure": "c6"
           };
-
+  
           const jsonFile = jsonFileMapping[subcategory.title];
-
+  
           try {
             const module = await import(`../assets/${jsonFile}.json`);
             const questions = module.questions;
-
+  
             // Loop through all questions in each subcategory
             questions.forEach(question => {
               // Find the answer using the question ID
@@ -144,7 +137,7 @@ const HomePage = () => {
                   break;
                 }
               }
-
+  
               data.push([storedEmpId, config.title, subcategory.title, question.question, questionAnswer]);
             });
           } catch (err) {
@@ -152,20 +145,22 @@ const HomePage = () => {
           }
         }
       }
-
+  
       // After collecting all the data, generate and export the Excel file
       const ws = XLSX.utils.aoa_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Survey Responses');
-      XLSX.writeFile(wb, 'survey_responses.xlsx');
+      
+      // Use the empId in the filename for dynamic naming
+      XLSX.writeFile(wb, `survey_responses_${storedEmpId}.xlsx`);
     };
-
+  
     collectAnswers(); 
-
-
-    
+  
+    // Reset answers after submission
     setAnswers({});
   };
+  
 
   
   return (
