@@ -11,7 +11,7 @@ const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, 
         
         if (questionsModule.default && Array.isArray(questionsModule.default.questions)) {
           setQuestions(questionsModule.default.questions);
-          setSubheading(questionsModule.default.subheading || '');
+          setSubheading(questionsModule.default.subheading || '');  // Set subheading dynamically
         } else {
           console.error('Invalid JSON structure: "questions" array missing');
         }
@@ -26,16 +26,16 @@ const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, 
   const handleAnswerChange = (questionId, answer) => {
     setAnswers(prev => ({
       ...prev,
-      [`${componentTitle}_${subheading}_${questionId}`]: answer
+      [`${componentTitle}_${subheading}_${questionId}`]: answer // Store answer using the composite key
     }));
   };
 
-   const handleReset = () => {
+  const handleReset = () => {
     setAnswers(prev => {
       const newAnswers = { ...prev };
       Object.keys(newAnswers).forEach(key => {
         if (key.startsWith(`${componentTitle}_${subheading}_`)) {
-          delete newAnswers[key];
+          delete newAnswers[key];  // Reset answers for this component and subheading
         }
       });
       return newAnswers;
@@ -47,12 +47,12 @@ const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, 
       {questions.length > 0 ? (
         <>
           {questions.map((question, index) => (
-            <SubComponent 
+            <SubComponent
               key={index}
               question={question}
               questionId={index}
               onAnswerChange={handleAnswerChange}
-              selectedAnswer={answers[`${componentTitle}_${subheading}_${index}`] || ""}
+              selectedAnswer={answers[`${componentTitle}_${subheading}_${index}`] || ""}  // Access answer with composite key
             />
           ))}
           <button onClick={handleReset} className="reset-button">Reset All</button>
@@ -65,4 +65,3 @@ const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, 
 };
 
 export default Component;
-

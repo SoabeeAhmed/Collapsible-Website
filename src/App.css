@@ -152,6 +152,7 @@ body::before {
   border-radius: 16px;
 }
 
+
 .radio-group {
   display: flex;
   justify-content: space-around;

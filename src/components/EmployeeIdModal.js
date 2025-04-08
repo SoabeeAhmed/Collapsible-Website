@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
-const EmployeeIdModal = ({ isOpen, onClose, onSubmit }) => {
+import HomePage from './HomePage';
+const EmployeeIdModal = ({ isOpen, onClose, onSubmit}) => {
   const [empId, setEmpId] = useState('');
   
   const empIdRegex = /^[A][0-9]{4}$/;
@@ -27,7 +27,9 @@ const handleSubmit = () => {
     } else {
       alert('Please enter an Employee ID that starts with "A" followed by 4 digits (e.g., A1234).');
     }
+
   }
+  
 };
 
 
