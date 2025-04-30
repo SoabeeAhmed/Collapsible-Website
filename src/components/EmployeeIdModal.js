@@ -48,8 +48,10 @@ const handleSubmit = () => {
           className="emp-id-input"
           placeholder="Eg:A1234"
         />
-        <button className="ok-button" onClick={handleSubmit}>Ok</button>
-        <button className="cancel-button" onClick={onClose}>Cancel</button>
+        <div className='modal-button'>
+          <button className="ok-button" onClick={handleSubmit}>Ok</button>
+          <button className="cancel-button" onClick={onClose}>Cancel</button>
+        </div>
       </div>
     </div>
   );

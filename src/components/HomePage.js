@@ -4,6 +4,7 @@ import EmployeeIdModal from './EmployeeIdModal';
 import Configs from './Configs';
 import * as XLSX from 'xlsx';
 import Component from './Component';
+import ReviewAnswersModal from './ReviewAnswersModal';
 
 const HomePage = () => {
   const [openComponent, setOpenComponent] = useState(null);
@@ -13,7 +14,8 @@ const HomePage = () => {
   const [subheading, setSubheading] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [savedAnswers, setSavedAnswers] = useState({}); 
-
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewData, setReviewData] = useState([]);
   
   useEffect(() => {
     const savedData = localStorage.getItem('submission_data');
@@ -63,36 +65,36 @@ const HomePage = () => {
   };
 
   const handleSubmit = async () => {
-    const missingAnswers = []; // ✅ Declare properly here
+    const missingAnswers = [];
+    const reviewAnswers = [];
   
     for (const config of Configs) {
       for (const subcategory of config.subcategories) {
-        const jsonFileMapping = {
-          "DQ Check": "c1",
-          "DQ Metric": "c2",
-          "Data Integrity": "c3",
-          "Data Accuracy": "c4",
-          "Data Classification": "c5",
-          "Data Structure": "c6"
-        };
-  
-        const jsonFile = jsonFileMapping[subcategory.title];
+        const jsonFile = subcategory.jsonFile;
   
         try {
-          const module = await import(`../assets/${jsonFile}.json`); // ✅ OK inside async
+          const module = await import(`../assets/${jsonFile}.json`);
           const questions = module.questions;
   
           questions.forEach(question => {
-            const questionId = question.id;
-            const key = `${config.title}_${subcategory.title}_${questionId}`;
+            const key = `${config.title}_${subcategory.title}_${question.id}`;
+            const answer = answers[key];
   
-            if (!answers[key] || answers[key].toString().trim() === '') {
+            if (!answer || answer.toString().trim() === '') {
               missingAnswers.push({
                 category: config.title,
                 subcategory: subcategory.title,
                 question: question.question
               });
             }
+  
+            reviewAnswers.push({
+              category: config.title,
+              subcategory: subcategory.title,
+              question: question.question,
+              answer: answer,
+              options: question.options 
+            });            
           });
         } catch (err) {
           console.error(`Error loading JSON file: ${jsonFile}`, err);
@@ -102,13 +104,18 @@ const HomePage = () => {
   
     if (missingAnswers.length > 0) {
       alert(`Please answer all questions before submitting. Missing: ${missingAnswers.length} question(s).`);
-      console.warn("Missing answers:", missingAnswers);
       return;
     }
   
-    setIsModalOpen(true);
+    setReviewData(reviewAnswers);
+    setShowReviewModal(true);
   };
-  
+
+  const handleReviewConfirm = () => {
+    setShowReviewModal(false);
+    setIsModalOpen(true); // open Employee ID modal
+  };
+    
   const handleEmployeeIdSubmit = (userEmpId) => {
     setEmpId(userEmpId);
 
@@ -243,6 +250,14 @@ const HomePage = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleEmployeeIdSubmit}
       />
+
+      <ReviewAnswersModal
+        isOpen={showReviewModal}
+        onClose={() => setShowReviewModal(false)}
+        onConfirm={handleReviewConfirm}
+        questionsData={reviewData}
+      />
+
     </div>
   );
 };
