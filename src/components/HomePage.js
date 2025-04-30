@@ -9,21 +9,17 @@ const HomePage = () => {
   const [openComponent, setOpenComponent] = useState(null);
   const [openSubcategory, setOpenSubcategory] = useState({});
   const [empId, setEmpId] = useState('');
-  const [answers, setAnswers] = useState({}); // Store answers keyed by question IDs
+  const [answers, setAnswers] = useState({}); 
   const [subheading, setSubheading] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [savedAnswers, setSavedAnswers] = useState({}); // Store saved answers separately
+  const [savedAnswers, setSavedAnswers] = useState({}); 
 
-  // Load saved answers from localStorage on component mount, but don't set them as current answers
+  
   useEffect(() => {
     const savedData = localStorage.getItem('submission_data');
     if (savedData) {
       const parsedData = JSON.parse(savedData);
       setSavedAnswers(parsedData.answers || {});
-      // Don't set answers state to prevent populating the UI with previous answers
-      // setAnswers(parsedData.answers || {});
-      
-      // Only set empId if we want to remember the last employee ID used
       setEmpId(parsedData.empId || '');
     }
   }, []);
@@ -57,7 +53,7 @@ const HomePage = () => {
         import(`../assets/${jsonFile}.json`)
           .then(module => {
             const questions = module.questions;
-            setSubheading(subcategoryTitle);  // Update subheading based on clicked subcategory
+            setSubheading(subcategoryTitle);  
           })
           .catch(err => {
             console.error("Error loading the JSON file:", err);
@@ -66,14 +62,57 @@ const HomePage = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const missingAnswers = []; // ✅ Declare properly here
+  
+    for (const config of Configs) {
+      for (const subcategory of config.subcategories) {
+        const jsonFileMapping = {
+          "DQ Check": "c1",
+          "DQ Metric": "c2",
+          "Data Integrity": "c3",
+          "Data Accuracy": "c4",
+          "Data Classification": "c5",
+          "Data Structure": "c6"
+        };
+  
+        const jsonFile = jsonFileMapping[subcategory.title];
+  
+        try {
+          const module = await import(`../assets/${jsonFile}.json`); // ✅ OK inside async
+          const questions = module.questions;
+  
+          questions.forEach(question => {
+            const questionId = question.id;
+            const key = `${config.title}_${subcategory.title}_${questionId}`;
+  
+            if (!answers[key] || answers[key].toString().trim() === '') {
+              missingAnswers.push({
+                category: config.title,
+                subcategory: subcategory.title,
+                question: question.question
+              });
+            }
+          });
+        } catch (err) {
+          console.error(`Error loading JSON file: ${jsonFile}`, err);
+        }
+      }
+    }
+  
+    if (missingAnswers.length > 0) {
+      alert(`Please answer all questions before submitting. Missing: ${missingAnswers.length} question(s).`);
+      console.warn("Missing answers:", missingAnswers);
+      return;
+    }
+  
     setIsModalOpen(true);
   };
-
+  
   const handleEmployeeIdSubmit = (userEmpId) => {
     setEmpId(userEmpId);
 
-    // Immediately use the latest answers state
+    
     const submissionData = {
       empId: userEmpId,
       answers
@@ -81,20 +120,20 @@ const HomePage = () => {
     console.log('Submission Data:', submissionData);
     localStorage.setItem('submission_data', JSON.stringify(submissionData));
 
-    // Update savedAnswers state with the current answers
+    
     setSavedAnswers(answers);
 
     alert('Submission successful!');
 
-    // Directly use answers from state, not savedAnswers
-    let storedAnswers = answers; // Get the answers directly from state
-    let storedEmpId = userEmpId; // Use the userEmpId passed in
+    
+    let storedAnswers = answers; 
+    let storedEmpId = userEmpId; 
 
-    // Log retrieved data for debugging
+    
     console.log("Answers used for export:", storedAnswers);
 
     const data = [
-      ['Employee ID', 'Category', 'Subcategory', 'Question', 'Answer'] // Headers for the Excel file
+      ['Employee ID', 'Category', 'Subcategory', 'Question', 'Answer']
     ];
 
     const collectAnswers = async () => {
@@ -115,13 +154,13 @@ const HomePage = () => {
             const module = await import(`../assets/${jsonFile}.json`);
             const questions = module.questions;
 
-            // Loop through all questions in each subcategory
+            
             questions.forEach(question => {
-              // Find the answer using the question ID
+              
               const questionId = question.id;
               let questionAnswer = 'No answer';
 
-              // Directly construct the key based on format used in Component.js
+              
               const answerKey = `${config.title}_${subcategory.title}_${questionId}`;
 
               if (storedAnswers[answerKey] !== undefined) {
@@ -137,18 +176,18 @@ const HomePage = () => {
         }
       }
 
-      // After collecting all the data, generate and export the Excel file
+    
       const ws = XLSX.utils.aoa_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Survey Responses');
 
-      // Using the empId in the filename for dynamic naming
+      
       XLSX.writeFile(wb, `survey_responses_${storedEmpId}.xlsx`);
     };
 
     collectAnswers();
 
-    // Reset answers after submission
+  
     setAnswers({});
   };
 

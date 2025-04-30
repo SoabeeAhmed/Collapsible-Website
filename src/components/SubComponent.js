@@ -9,7 +9,7 @@ const SubComponent = ({ question, questionId, onAnswerChange, selectedAnswer }) 
           <label key={index}>
             <input
               type="radio"
-              name={`question-${question.subheading}-${question.id}`}  // Ensure name is unique to each question
+              name={`question-${question.subheading}-${question.id}`}  
               value={option}
               checked={selectedAnswer === option}
               onChange={() => onAnswerChange(questionId, option)} // Updates the answer when changed
