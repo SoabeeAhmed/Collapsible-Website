@@ -8,7 +8,7 @@ const ReviewAnswersModal = ({ isOpen, onClose, onConfirm, questionsData }) => {
       <div className="modal-content-review" onClick={(e) => e.stopPropagation()}>
         <h2>Review Your Answers</h2>
         <div className="answers-list">
-          {questionsData.length > 0 ? (
+          {/* {questionsData.length > 0 ? ( */}
             <ul>
               {questionsData.map((item, idx) => (
                 <li key={idx}>
@@ -30,9 +30,9 @@ const ReviewAnswersModal = ({ isOpen, onClose, onConfirm, questionsData }) => {
               </li>              
               ))}
             </ul>
-          ) : (
+          {/* ) : (
             <p>No answers to show.</p>
-          )}
+          )} */}
         </div>
         <div className="modal-actions">
           <button className="ok-button-modal" onClick={onConfirm}>Ok</button>

@@ -209,21 +209,21 @@ const HomePage = () => {
       </div>
 
       {Configs.map(config => (
-        <div key={config.id} className="component">
+        <div key={config.id} className={`component ${openComponent === config.id ? 'open' : ''}`}>
           <div className="component-header" onClick={() => handleComponentClick(config.id)}>
             {config.icon}
             {config.title} <span>{openComponent === config.id ? '\u25BC' : '\u25B6'}</span>
           </div>
           {openComponent === config.id && (
-            <div className="component-subcategories">
+            <div className="component-subcategories active">
               {config.subcategories.map(subcategory => (
-                <div key={subcategory.title} className="subcategory">
+                <div key={subcategory.title} className={`subcategory ${openSubcategory[config.id] === subcategory.title ? 'open' : ''}`}>
                   <div className="subcategory-header" onClick={() => handleSubcategoryClick(config.id, subcategory.title)}>
                     {subcategory.title}
                     <span>{openSubcategory[config.id] === subcategory.title ? '\u25BC' : '\u25B6'}</span>
                   </div>
                   {openSubcategory[config.id] === subcategory.title && (
-                    <div className="subcategory-content">
+                    <div className="subcategory-content active">
                       <Component
                         componentTitle={config.title}
                         jsonFile={subcategory.jsonFile}
