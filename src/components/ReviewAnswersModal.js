@@ -35,8 +35,8 @@ const ReviewAnswersModal = ({ isOpen, onClose, onConfirm, questionsData }) => {
           )} */}
         </div>
         <div className="modal-actions">
-          <button className="ok-button-modal" onClick={onConfirm}>Ok</button>
-          <button className="cancel-button-modal" onClick={onClose}>Cancel</button>
+          <button className="ok-button-modal" onClick={onConfirm}><strong>Ok</strong></button>
+          <button className="cancel-button-modal" onClick={onClose}><strong>Cancel</strong></button>
         </div>
       </div>
     </div>
