@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FaDatabase } from "react-icons/fa";
-import EmployeeIdModal from './EmployeeIdModal';
+import EmployeeIdModal from '../modals/EmployeeIdModal';
 import Configs from './Configs';
 import * as XLSX from 'xlsx';
-import Component from './Component';
-import ReviewAnswersModal from './ReviewAnswersModal';
+import Component from '../components/Component';
+import ReviewAnswersModal from '../modals/ReviewAnswersModal';
 
 const HomePage = () => {
   const [openComponent, setOpenComponent] = useState(null);
