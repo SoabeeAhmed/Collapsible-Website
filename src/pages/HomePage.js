@@ -18,11 +18,10 @@ const HomePage = () => {
   const [reviewData, setReviewData] = useState([]);
 
   useEffect(() => {
-    const savedData = localStorage.getItem('submission_data');
-    if (savedData) {
-      const parsedData = JSON.parse(savedData);
-      setSavedAnswers(parsedData.answers || {});
-      setEmpId(parsedData.empId || '');
+    const allSubmissions = localStorage.getItem('all_submissions');
+    if (allSubmissions) {
+      const parsed = JSON.parse(allSubmissions);
+      setSavedAnswers(parsed);
     }
   }, []);
 
@@ -40,9 +39,7 @@ const HomePage = () => {
     }));
 
     if (!openSubcategory[componentId]) {
-      const jsonFile = subcategoryTitle;
-
-      import(`../assets/${jsonFile}.json`)
+      import(`../assets/${subcategoryTitle}.json`)
         .then(module => {
           const questions = module.questions;
           setSubheading(subcategoryTitle);
@@ -106,20 +103,27 @@ const HomePage = () => {
   };
 
   const handleEmployeeIdSubmit = (userEmpId) => {
-    setEmpId(userEmpId);
+    const allSubmissions = JSON.parse(localStorage.getItem('all_submissions') || '{}');
+
+    if (allSubmissions[userEmpId]) {
+      alert('You have already submitted the survey. Each employee is allowed to submit only once.');
+      return;
+    }
 
     const submissionData = {
       empId: userEmpId,
       answers
     };
 
-    console.log('Submission Data:', submissionData);
+    // Store the new submission
+    allSubmissions[userEmpId] = submissionData;
+    localStorage.setItem('all_submissions', JSON.stringify(allSubmissions));
     localStorage.setItem('submission_data', JSON.stringify(submissionData));
+
     setSavedAnswers(answers);
+    setEmpId(userEmpId);
 
     alert('Submission successful!');
-    let storedAnswers = answers;
-    let storedEmpId = userEmpId;
 
     const data = [
       ['Employee ID', 'Category', 'Subcategory', 'Question', 'Answer']
@@ -135,15 +139,9 @@ const HomePage = () => {
             const questions = module.questions;
 
             questions.forEach(question => {
-              const questionId = question.id;
-              let questionAnswer = 'No answer';
-              const answerKey = `${config.title}_${subcategory.title}_${questionId}`;
-
-              if (storedAnswers[answerKey] !== undefined) {
-                questionAnswer = storedAnswers[answerKey];
-              }
-
-              data.push([storedEmpId, config.title, subcategory.title, question.question, questionAnswer]);
+              const answerKey = `${config.title}_${subcategory.title}_${question.id}`;
+              const questionAnswer = answers[answerKey] || 'No answer';
+              data.push([userEmpId, config.title, subcategory.title, question.question, questionAnswer]);
             });
           } catch (err) {
             console.error(`Error loading the JSON file for ${jsonFile}:`, err);
@@ -154,7 +152,7 @@ const HomePage = () => {
       const ws = XLSX.utils.aoa_to_sheet(data);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Survey Responses');
-      XLSX.writeFile(wb, `survey_responses_${storedEmpId}.xlsx`);
+      XLSX.writeFile(wb, `survey_responses_${userEmpId}.xlsx`);
     };
 
     collectAnswers();
