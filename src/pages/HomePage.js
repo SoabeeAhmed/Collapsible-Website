@@ -201,6 +201,7 @@ const HomePage = () => {
           )}
         </div>
       ))}
+      
 
       <button className="submit-button" onClick={handleSubmit}>
         <strong>Submit</strong>
