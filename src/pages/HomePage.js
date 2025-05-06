@@ -128,7 +128,12 @@ const HomePage = () => {
           // Remove the highlight after 3 seconds
           setTimeout(() => {
             element.classList.remove('highlight-missing');
+            setMissingQuestionRef(null);
           }, 3000);
+        }
+        else 
+        {
+          setMissingQuestionRef(null);
         }
       }, 300);
       
