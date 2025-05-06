@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaDatabase } from "react-icons/fa";
 import EmployeeIdModal from '../modals/EmployeeIdModal';
 import Configs from './Configs';
@@ -16,6 +16,7 @@ const HomePage = () => {
   const [savedAnswers, setSavedAnswers] = useState({});
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewData, setReviewData] = useState([]);
+  const [missingQuestionRef, setMissingQuestionRef] = useState(null);
 
   useEffect(() => {
     const allSubmissions = localStorage.getItem('all_submissions');
@@ -53,6 +54,10 @@ const HomePage = () => {
   const handleSubmit = async () => {
     const missingAnswers = [];
     const reviewAnswers = [];
+    let firstMissingFound = false;
+    let firstMissingConfig = null;
+    let firstMissingSubcategory = null;
+    let firstMissingQuestionId = null;
 
     for (const config of Configs) {
       for (const subcategory of config.subcategories) {
@@ -62,7 +67,7 @@ const HomePage = () => {
           const module = await import(`../assets/${jsonFile}.json`);
           const questions = module.questions;
 
-          questions.forEach(question => {
+          questions.forEach((question, index) => {
             const key = `${config.title}_${subcategory.title}_${question.id}`;
             const answer = answers[key];
 
@@ -70,8 +75,17 @@ const HomePage = () => {
               missingAnswers.push({
                 category: config.title,
                 subcategory: subcategory.title,
-                question: question.question
+                question: question.question,
+                questionId: question.id,
+                index: index
               });
+
+              if (!firstMissingFound) {
+                firstMissingFound = true;
+                firstMissingConfig = config.id;
+                firstMissingSubcategory = subcategory.title;
+                firstMissingQuestionId = question.id;
+              }
             }
 
             reviewAnswers.push({
@@ -89,7 +103,35 @@ const HomePage = () => {
     }
 
     if (missingAnswers.length > 0) {
-      alert(`Please answer all questions before submitting. Missing: ${missingAnswers.length} question(s).`);
+      // Reset all open states
+      setOpenComponent(firstMissingConfig);
+      
+      // Create a new object for openSubcategory with only the first missing subcategory open
+      const newOpenSubcategory = {};
+      newOpenSubcategory[firstMissingConfig] = firstMissingSubcategory;
+      setOpenSubcategory(newOpenSubcategory);
+      
+      // Set the reference to highlight the missing question
+      setMissingQuestionRef({
+        config: firstMissingConfig,
+        subcategory: firstMissingSubcategory,
+        questionId: firstMissingQuestionId
+      });
+      
+      // Scroll to the component after a short delay to allow the DOM to update
+      setTimeout(() => {
+        const element = document.getElementById(`question_${firstMissingConfig}_${firstMissingSubcategory}_${firstMissingQuestionId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          element.classList.add('highlight-missing');
+          
+          // Remove the highlight after 3 seconds
+          setTimeout(() => {
+            element.classList.remove('highlight-missing');
+          }, 3000);
+        }
+      }, 300);
+      
       return;
     }
 
@@ -192,6 +234,7 @@ const HomePage = () => {
                         setAnswers={setAnswers}
                         subheading={subheading}
                         setSubheading={setSubheading}
+                        missingQuestionRef={missingQuestionRef}
                       />
                     </div>
                   )}
@@ -202,7 +245,6 @@ const HomePage = () => {
         </div>
       ))}
       
-
       <button className="submit-button" onClick={handleSubmit}>
         <strong>Submit</strong>
       </button>

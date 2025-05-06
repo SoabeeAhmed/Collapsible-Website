@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SubComponent from './SubComponent';
 
-const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, setSubheading }) => {
+const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, setSubheading, missingQuestionRef }) => {
   const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
@@ -53,6 +53,10 @@ const Component = ({ componentTitle, jsonFile, answers, setAnswers, subheading, 
               questionId={index}
               onAnswerChange={handleAnswerChange}
               selectedAnswer={answers[`${componentTitle}_${subheading}_${index}`] || ""}  // Access answer with composite key
+              isMissing={missingQuestionRef && 
+                missingQuestionRef.subcategory === jsonFile && 
+                missingQuestionRef.questionId === index}
+              componentId={`question_${missingQuestionRef?.config || ''}_${jsonFile}_${index}`}
             />
           ))}
           <button onClick={handleReset} className="reset-button">Reset All</button>
